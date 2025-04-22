@@ -1,0 +1,6 @@
+torch==2.6.0+cu118
+torchvision==0.21.0+cu118
+pennylane
+pennylane-lightning[gpu]
+pillow==11.1.0
+numpy==1.26.4
