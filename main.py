@@ -1,6 +1,6 @@
 from src.data_loader import get_cifar10_data
-from src.quantum_circuit import create_quantum_circuit
-from src.model import QNN
+from src.quantum_circuit import create_enhanced_quantum_circuit, create_quantum_circuit
+from src.model import QNN, EnhancedQNN
 from src.trainer import train_model
 from src.utils import get_device, check_dataset
 
@@ -20,14 +20,17 @@ def main():
         print("CIFAR-10 dataset will be downloaded")
 
     # Tải dữ liệu
-    trainloader = get_cifar10_data(root=data_root, batch_size=batch_size)
+    trainloader, testloader = get_cifar10_data(root=data_root, batch_size=batch_size)
 
-    # Tạo quantum circuit và mô hình
+    #Basic Model
     quantum_circuit = create_quantum_circuit(n_qubits)
     model = QNN(n_qubits, quantum_circuit).to(device)
+    train_model(model, trainloader, testloader, device, n_epochs=n_epochs)
 
-    # Huấn luyện
-    train_model(model, trainloader, device, n_epochs=n_epochs)
+    # # Enhanced Model
+    # quantum_circuit = create_enhanced_quantum_circuit(n_qubits, n_layers=2)
+    # model = EnhancedQNN(n_qubits, quantum_circuit).to(device)
+    # train_model(model, trainloader, testloader, device, n_epochs=n_epochs, lr=0.0005)
 
 if __name__ == "__main__":
     main()
